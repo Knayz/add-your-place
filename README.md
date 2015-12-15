@@ -1,4 +1,4 @@
-WP_pasha.com_plugin
+Add your place plugin
 ===================
 
-Wordpress Plugin for website fitnessworkout.com
+Wordpress Plugin for adding users places on Google Map.
