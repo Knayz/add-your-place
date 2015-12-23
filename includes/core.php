@@ -5,12 +5,62 @@
  * Date: 17.12.15
  * Time: 12:41
  */
-
+add_action('admin_menu', 'add_your_place_create_settings_submenu');
 add_shortcode( 'add-your-place', 'add_your_place_shortcode');
 add_action( 'wp_enqueue_scripts', 'register_add_your_place_styles' );
 add_action( 'wp_enqueue_scripts', 'register_add_your_place_scripts' );
-add_action ('wp_loaded', 'add_your_place_save_place');
+add_action('wp_loaded', 'add_your_place_save_place');
 
+function add_your_place_create_settings_submenu()
+{
+    add_options_page( "Add Your Place Settins Page", "Add Your Place", "manage_options", 'add_your_place_settins_page', 'add_your_place_settings_submenu' );
+    add_action('admin_init', 'add_your_place_register_settings');
+}
+
+function add_your_place_register_settings()
+{
+    register_setting('add-your-place-group', 'add_your_place_options', 'add_your_place_sanitize_options');
+}
+
+function add_your_place_settings_submenu()
+{ ?>
+    <div class="wrap">
+        <h2>Add Your Place Plugin Options</h2>
+
+        <form action="options.php" method="post">
+            <?php settings_fields('add-your-place-group');?>
+            <?php $add_your_place_options = get_option('add_your_place_options');?>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Title</th>
+                    <td>
+                        <input type="text" name="add_your_place_options[option_title]"
+                         value="<?php echo esc_attr($add_your_place_options['option_title']); ?>">
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Text</th>
+                    <td>
+                        <input type="text" name="add_your_place_options[option_text]"
+                               value="<?php echo esc_attr($add_your_place_options['option_text']); ?>">
+                    </td>
+                </tr>
+            </table>
+            <p class="submit">
+                <input type="submit" class="button-primary" value="Save Changes">
+            </p>
+        </form>
+
+    </div>
+<?php
+}
+
+function add_your_place_sanitize_options( $input )
+{
+    $input['option_title'] = sanitize_text_field($input['option_title']);
+    $input['option_text'] = sanitize_text_field($input['option_text']);
+    return $input;
+}
 
 function register_add_your_place_styles()
 {
@@ -29,6 +79,7 @@ function add_your_place_shortcode()
 {
     //exit("stop");
     global $wpdb;
+    $add_your_place_options = get_option('add_your_place_options');
     $edit_page = false;
     if(isset($_GET['addyourplace']) && $_GET['addyourplace'] == 1)
         $edit_page = true;
@@ -58,25 +109,13 @@ jQuery(document).ready(function($){
     </script>
         <div class='add-your-place-wrap'>
             <div class='add-your-place-title'>
-                <h3>Places</h3>";
+                <h3>{$add_your_place_options['option_title']}</h3>";
         if (is_user_logged_in())
             $output .= "<a href='" . get_permalink() . "?addyourplace=1'>Add</a> ";
         $output .= "
             </div>
             <p class='add-your-place-description'>
-                Text, text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text,
-                text, text, text, text, text, text, text, text, text, text, text, text.
+                {$add_your_place_options['option_text']}
             </p>
             <div class='add-your-place-gmap'>
                 <div class='ui-widget-content form_pad'>
