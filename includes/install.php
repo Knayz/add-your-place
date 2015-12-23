@@ -29,6 +29,17 @@ function add_your_place_install()
        $wpdb->query("RENAME TABLE countries TO " . $wpdb->prefix . "countries");
        $wpdb->query("RENAME TABLE cities TO " . $wpdb->prefix . "cities");
        $wpdb->query("RENAME TABLE regions TO " . $wpdb->prefix . "regions");
+        $wpdb->query("CREATE TABLE " . $wpdb->prefix . "new_places (
+                        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                          `name` varchar(255) DEFAULT NULL,
+                          `lat` decimal(20,17) DEFAULT NULL,
+                          `lng` decimal(20,17) DEFAULT NULL,
+                          `id_country` int(10) NOT NULL,
+                          `id_city` int(10) NOT NULL,
+                          `address` varchar(255) NOT NULL,
+                          PRIMARY KEY (`id`),
+                          KEY `el_name` (`name`)
+                        ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
     } else {
         var_dump($unzipfile);
     }

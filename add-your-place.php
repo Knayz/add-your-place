@@ -32,5 +32,8 @@ Copyright 2015-2016 Knayz (email: pesterev.andruha@gmail.com)
 define ( "ADD_YOUR_PLACE_DIR", plugin_dir_path(__FILE__) );
 define ( "ADD_YOUR_PLACE_INCLUDES_DIR", ADD_YOUR_PLACE_DIR . "includes/" );
 define ( "ADD_YOUR_PLACE_URL", plugin_dir_url(__FILE__) );
+define ( "ADD_YOUR_PLACE_STYLES_DIR", ADD_YOUR_PLACE_URL . "css/" );
+define ( "ADD_YOUR_PLACE_SCRIPTS_DIR", ADD_YOUR_PLACE_URL . "js/" );
 require_once( ADD_YOUR_PLACE_INCLUDES_DIR . "install.php" );
+require_once( ADD_YOUR_PLACE_INCLUDES_DIR . "core.php" );
 register_activation_hook( __FILE__ , 'add_your_place_install');
